@@ -11,27 +11,27 @@ btnPrev.classList.add('hide');
 btnPrev.classList.add('hide');
 
 const images = [
-  {
-      image: 'img/01.webp',
-      title: 'Marvel\'s Spiderman Miles Morale',
-      text: 'Experience the rise of Miles Morales as the new hero masters incredible, explosive new powers to become his own Spider-Man.',
-  }, {
-      image: 'img/02.webp',
-      title: 'Ratchet & Clank: Rift Apart',
-      text: 'Go dimension-hopping with Ratchet and Clank as they take on an evil emperor from another reality.',
-  }, {
-      image: 'img/03.webp',
-      title: 'Fortnite',
-      text: "Grab all of your friends and drop into Epic Games Fortnite, a massive 100-player face-off that combines looting, crafting, shootouts, and chaos.",
-  }, {
-      image: 'img/04.webp',
-      title: 'Stray',
-      text: 'Lost, injured and alone, a stray cat must untangle an ancient mystery to escape a long-forgotten city.',
-  }, {
-      image: 'img/05.webp',
-      title: "Marvel's Avengers",
-      text: 'Marvel\'s Avengers is an epic, third-person, action-adventure game that combines an original, cinematic story with single-player and co-operative gameplay.',
-  }
+    {
+        image: 'img/01.webp',
+        title: 'Marvel\'s Spiderman Miles Morale',
+        text: 'Experience the rise of Miles Morales as the new hero masters incredible, explosive new powers to become his own Spider-Man.',
+    }, {
+        image: 'img/02.webp',
+        title: 'Ratchet & Clank: Rift Apart',
+        text: 'Go dimension-hopping with Ratchet and Clank as they take on an evil emperor from another reality.',
+    }, {
+        image: 'img/03.webp',
+        title: 'Fortnite',
+        text: "Grab all of your friends and drop into Epic Games Fortnite, a massive 100-player face-off that combines looting, crafting, shootouts, and chaos.",
+    }, {
+        image: 'img/04.webp',
+        title: 'Stray',
+        text: 'Lost, injured and alone, a stray cat must untangle an ancient mystery to escape a long-forgotten city.',
+    }, {
+        image: 'img/05.webp',
+        title: "Marvel's Avengers",
+        text: 'Marvel\'s Avengers is an epic, third-person, action-adventure game that combines an original, cinematic story with single-player and co-operative gameplay.',
+    }
 ];
 
 
@@ -45,7 +45,11 @@ circlesWrapper.innerHTML = '';
 for (let i = 0; i < images.length; i++) {
     const image = images[i];
     console.log(image);
-    itemsWrapper.innerHTML += `<img src="${image}" class="item hide"></img>`;
+    itemsWrapper.innerHTML += `
+    <img src="${image.image}" alt="${image.title}">
+    <h2>${image.title}</h2>
+    <p>${image.text}</p>
+    `;
     //stampare tanti pallini quanti sono le immagini
     circlesWrapper.innerHTML += `<div class="circle"></div>`;
 }
@@ -68,7 +72,7 @@ btnNext.addEventListener('click', function(){
     itemsCollection[counterImg].classList.add('hide');
     circlesCollection[counterImg].classList.remove('active');
     //incrementa il contatore
-    counterImg++;
+    counterImg++;  
     //BONUS 1
     // Verifico se si è raggiunta l'ultima immagine
     if (counterImg === itemsCollection.length) {
@@ -80,10 +84,17 @@ btnNext.addEventListener('click', function(){
     circlesCollection[counterImg].classList.add('active');
     //al click di next appare prev
     btnPrev.classList.remove('hide');
+    
+    // BONUS 2: Se l'autoslide è attivo, riavvialo dopo un click su "Next"
+    if (interval) {
+        clearInterval(interval);
+        startAutoSlide();
+    }
 });
 
 //al click di prev come punto 4 va inverso
 btnPrev.addEventListener('click', function(){
+    // Aggiungo la classe "hide" all'elemento corrente e rimuovo "active" dal pallino corrente
     itemsCollection[counterImg].classList.add('hide');
     circlesCollection[counterImg].classList.remove('active');
     counterImg--;
@@ -98,27 +109,32 @@ btnPrev.addEventListener('click', function(){
     //al click di prev mostrio next togliendo la classe hide
     btnNext.classList.remove('hide');
     
+    // BONUS 2: Se l'autoslide è attivo, riavvialo dopo un click su "Prev"
+    if (interval) {
+        clearInterval(interval);
+        startAutoSlide();
+    }
 });
 
 //Autoslide
 // Variabile per l'intervallo di autoslide
-let interval; 
+let interval;
 
 // Tempo in millisecondi tra le slide automatiche
-const autoSlideInterval = 3000; 
+const autoSlideInterval = 3000;
 
 // Funzione per avviare l'autoslide
 function startAutoSlide() {
-  interval = setInterval(function () {
+    interval = setInterval(function () {
 
-    // Simula il click sul pulsante "Next" per cambiare immagine
-    btnNext.click(); 
-  }, autoSlideInterval);
+        // Simula il click sul pulsante "Next" per cambiare immagine
+        btnNext.click();
+    }, autoSlideInterval);
 }
 
 // Funzione per interrompere l'autoslide
 function stopAutoSlide() {
-  clearInterval(interval);
+    clearInterval(interval);
 }
 
 // Aggiungo un gestore di eventi per avviare l'autoslide al caricamento della pagina
