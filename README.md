@@ -1,0 +1,1 @@
+- creo un array chiamato images

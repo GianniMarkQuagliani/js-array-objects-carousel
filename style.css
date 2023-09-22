@@ -1,0 +1,149 @@
+/* 
+   Impostazioni globali per il reset dei margini, dei padding e del box-sizing.
+   Questo assicura una base uniforme per tutti gli elementi.
+*/
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 
+   Stile per il contenitore principale del carosello.
+   Altezza pari al 100% della viewport, centrato verticalmente ed orizzontalmente.
+   Sfondo di colore lightseagreen.
+*/
+
+.main-wrapper{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightseagreen;
+}
+
+/* 
+   Classe per nascondere gli elementi.
+   Gli elementi con questa classe avranno display: none.
+*/
+
+.hide{
+    display: none;
+}
+
+/* 
+   Stile per il contenitore principale del carosello.
+   Larghezza del 60% della larghezza del genitore, centrato orizzontalmente.
+   Sfondo di colore brown.
+*/
+
+.container{
+    width: 60%;
+    height: 60%;
+    margin: 0 auto;
+    background-color: brown;
+}
+
+/* 
+   Stile per il contenitore degli elementi del carosello.
+   Altezza pari al 100% del contenitore principale.
+*/
+
+.slider{
+    position: relative;
+    height: 100%;
+}
+
+/* 
+   Stile per il contenitore delle immagini del carosello.
+   Altezza pari al 100% del contenitore degli elementi.
+*/
+
+.items-wrapper{
+    height: 100%;
+}
+
+/* 
+   Stile per le immagini all'interno del carosello.
+   Le immagini verranno ridimensionate per coprire tutto il contenitore.
+*/
+
+.items-wrapper img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/*
+   Stile per le immagini all'interno del carosello.
+   Le immagini verranno ridimensionate per coprire tutto il contenitore.
+*/
+.btn-arrow{
+    position: absolute;
+    background-color: rgba(0,0,0, .6);
+    color: white;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 50%;
+    text-align: center;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* 
+   Cambiano colore in rgba(0, 0, 0, 0.8) quando vengono passati con il mouse.
+*/
+
+.btn-arrow.left:hover,
+.btn-arrow.right:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/*
+   Posizionati a sinistra del carosello.
+*/
+.btn-arrow.left{
+    left: 15px;
+}
+
+/*
+   Posizionati a destra del carosello.
+*/
+
+.btn-arrow.right{
+    right: 15px;
+}
+
+/* 
+    Posiziona i cerchi in basso a destra della pagina, centrati verticalmente.
+*/
+
+.circles{
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+}
+
+/* 
+    Stile per i cerchi.
+*/
+
+.circle{
+    width: 10px;
+    height: 10px;
+    background-color: rgba(94, 9, 221, 0.6);
+    margin: 0 10px;
+    border-radius: 50%;
+}
+
+/* 
+    Cambia il colore di sfondo del cerchio in bianco quando è attivo.
+*/
+
+.circle.active{
+    background-color: rgb(238, 4, 4);
+}
