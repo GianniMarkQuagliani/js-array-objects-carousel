@@ -3,22 +3,28 @@ class Slider {
       this.images = images;
       this.counterImg = 0;
   
+      // Seleziona gli elementi del DOM in base alle classi fornite come argomenti
       this.itemsWrapper = document.querySelector(itemsWrapperClass);
       this.circlesWrapper = document.querySelector(circlesWrapperClass);
       this.btnNext = document.querySelector(btnNextClass);
       this.btnPrev = document.querySelector(btnPrevClass);
       this.autoSlideInterval = 5000; // Intervallo di autoslide in millisecondi
   
+      // Nascondi il pulsante "Prev" all'inizio e svuota i contenitori delle immagini e dei cerchi
       this.btnPrev.classList.add('hide');
       this.itemsWrapper.innerHTML = '';
       this.circlesWrapper.innerHTML = '';
   
+      // Inizializza il carousel
       this.init();
     }
   
     init() {
+      // Renderizza le immagini nel carousel
       this.renderImages();
+      // Aggiungi gli eventi per la navigazione e l'auto-avanzamento
       this.addEventListeners();
+      // Avvia l'auto-avanzamento delle immagini
       this.startAutoSlide();
     }
   
@@ -38,11 +44,13 @@ class Slider {
         this.circlesWrapper.appendChild(circle);
       }
   
+      // Mostra la prima immagine e il cerchio corrispondente
       this.itemsWrapper.querySelector('.item').classList.remove('hide');
       this.circlesWrapper.querySelector('.circle').classList.add('active');
     }
   
     addEventListeners() {
+      // Aggiungi eventi per i pulsanti di navigazione e l'auto-avanzamento
       this.btnNext.addEventListener('click', () => this.nextSlide());
       this.btnPrev.addEventListener('click', () => this.prevSlide());
       this.itemsWrapper.addEventListener('mouseover', () => this.stopAutoSlide());
@@ -50,6 +58,7 @@ class Slider {
     }
   
     nextSlide() {
+      // Passa alla prossima immagine e aggiorna le classi di visualizzazione
       this.toggleSlide(this.counterImg, 'hide', 'active');
       this.counterImg = (this.counterImg + 1) % this.images.length;
       this.toggleSlide(this.counterImg, 'hide', 'active');
@@ -57,6 +66,7 @@ class Slider {
     }
   
     prevSlide() {
+      // Passa all'immagine precedente e aggiorna le classi di visualizzazione
       this.toggleSlide(this.counterImg, 'hide', 'active');
       this.counterImg = (this.counterImg - 1 + this.images.length) % this.images.length;
       this.toggleSlide(this.counterImg, 'hide', 'active');
@@ -64,6 +74,7 @@ class Slider {
     }
   
     toggleSlide(index, hideClass, activeClass) {
+      // Gestisce la visualizzazione delle immagini e dei cerchi
       const item = this.itemsWrapper.querySelectorAll('.item')[index];
       const circle = this.circlesWrapper.querySelectorAll('.circle')[index];
   
@@ -72,16 +83,19 @@ class Slider {
     }
   
     startAutoSlide() {
+      // Avvia l'auto-avanzamento delle immagini
       this.interval = setInterval(() => {
         this.nextSlide();
       }, this.autoSlideInterval);
     }
   
     stopAutoSlide() {
+      // Ferma l'auto-avanzamento delle immagini
       clearInterval(this.interval);
     }
   }
   
+  // Array di immagini
   const images = [
     {
       image: 'img/01.webp',
@@ -110,6 +124,7 @@ class Slider {
     },
   ];
   
+  // Creazione dell'istanza del carousel
   const slider = new Slider(
     images,
     '.items-wrapper',
