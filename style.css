@@ -147,3 +147,24 @@
 .circle.active{
     background-color: rgb(238, 4, 4);
 }
+
+.item{
+    position: relative;
+    height: 100%;
+}
+.item h2{
+    font-size: 1.5rem;
+    margin-top: 10px;
+    color: white;
+    position: absolute;
+    bottom: 100px;
+    right: 10px;
+}
+
+.item p{
+    font-size: 1rem;
+    color: white;
+    position: absolute;
+    bottom: 50px;
+    right: 10px;
+}
