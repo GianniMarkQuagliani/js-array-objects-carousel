@@ -1,132 +1,120 @@
-//elements
-const itemsWrapper = document.querySelector('.items-wrapper');
-const circlesWrapper = document.querySelector('.circles');
-const btnNext = document.querySelector('.right');
-const btnPrev = document.querySelector('.left');
-
-//nascondo di defoult il bottone prev
-btnPrev.classList.add('hide');
-
-//nascondo di defoult il bottone prev
-btnPrev.classList.add('hide');
-
-const images = [
+class Slider {
+    constructor(images, itemsWrapperClass, circlesWrapperClass, btnNextClass, btnPrevClass) {
+      this.images = images;
+      this.counterImg = 0;
+  
+      this.itemsWrapper = document.querySelector(itemsWrapperClass);
+      this.circlesWrapper = document.querySelector(circlesWrapperClass);
+      this.btnNext = document.querySelector(btnNextClass);
+      this.btnPrev = document.querySelector(btnPrevClass);
+      this.autoSlideInterval = 5000; // Intervallo di autoslide in millisecondi
+  
+      this.btnPrev.classList.add('hide');
+      this.itemsWrapper.innerHTML = '';
+      this.circlesWrapper.innerHTML = '';
+  
+      this.init();
+    }
+  
+    init() {
+      this.renderImages();
+      this.addEventListeners();
+      this.startAutoSlide();
+    }
+  
+    renderImages() {
+      for (let i = 0; i < this.images.length; i++) {
+        const image = this.images[i];
+        const item = document.createElement('div');
+        item.classList.add('item', 'hide');
+        item.innerHTML = `
+          <img src="${image.image}" alt="${image.title}">
+          <h2>${image.title}</h2>
+          <p>${image.text}</p>`;
+        this.itemsWrapper.appendChild(item);
+  
+        const circle = document.createElement('div');
+        circle.classList.add('circle');
+        this.circlesWrapper.appendChild(circle);
+      }
+  
+      this.itemsWrapper.querySelector('.item').classList.remove('hide');
+      this.circlesWrapper.querySelector('.circle').classList.add('active');
+    }
+  
+    addEventListeners() {
+      this.btnNext.addEventListener('click', () => this.nextSlide());
+      this.btnPrev.addEventListener('click', () => this.prevSlide());
+      this.itemsWrapper.addEventListener('mouseover', () => this.stopAutoSlide());
+      this.itemsWrapper.addEventListener('mouseout', () => this.startAutoSlide());
+    }
+  
+    nextSlide() {
+      this.toggleSlide(this.counterImg, 'hide', 'active');
+      this.counterImg = (this.counterImg + 1) % this.images.length;
+      this.toggleSlide(this.counterImg, 'hide', 'active');
+      this.btnPrev.classList.remove('hide');
+    }
+  
+    prevSlide() {
+      this.toggleSlide(this.counterImg, 'hide', 'active');
+      this.counterImg = (this.counterImg - 1 + this.images.length) % this.images.length;
+      this.toggleSlide(this.counterImg, 'hide', 'active');
+      this.btnNext.classList.remove('hide');
+    }
+  
+    toggleSlide(index, hideClass, activeClass) {
+      const item = this.itemsWrapper.querySelectorAll('.item')[index];
+      const circle = this.circlesWrapper.querySelectorAll('.circle')[index];
+  
+      item.classList.toggle(hideClass);
+      circle.classList.toggle(activeClass);
+    }
+  
+    startAutoSlide() {
+      this.interval = setInterval(() => {
+        this.nextSlide();
+      }, this.autoSlideInterval);
+    }
+  
+    stopAutoSlide() {
+      clearInterval(this.interval);
+    }
+  }
+  
+  const images = [
     {
-        image: 'img/01.webp',
-        title: 'Marvel\'s Spiderman Miles Morale',
-        text: 'Experience the rise of Miles Morales as the new hero masters incredible, explosive new powers to become his own Spider-Man.',
-    }, {
-        image: 'img/02.webp',
-        title: 'Ratchet & Clank: Rift Apart',
-        text: 'Go dimension-hopping with Ratchet and Clank as they take on an evil emperor from another reality.',
-    }, {
-        image: 'img/03.webp',
-        title: 'Fortnite',
-        text: "Grab all of your friends and drop into Epic Games Fortnite, a massive 100 - player face - off that combines looting, crafting, shootouts and chaos.",
-    }, {
-        image: 'img/04.webp',
-        title: 'Stray',
-        text: 'Lost, injured and alone, a stray cat must untangle an ancient mystery to escape a long-forgotten city',
-    }, {
-        image: 'img/05.webp',
-        title: "Marvel's Avengers",
-        text: 'Marvel\'s Avengers is an epic, third-person, action-adventure game that combines an original, cinematic story with single-player and co-operative gameplay.',
-    }
-];
-
-let counterImg = 0;
-
-//resetto lo slider
-itemsWrapper.innerHTML = '';
-circlesWrapper.innerHTML = '';
-
-//con un ciclo stampo tutte le immagini dentro a items-wrapper
-for (let i = 0; i < images.length; i++) {
-    const image = images[i];
-    itemsWrapper.innerHTML += `
-        <div class="item hide">
-            <img src="${image.image}" alt="${image.title}">
-            <h2>${image.title}</h2>
-            <p>${image.text}</p>
-        </div>`;
-    // Aggiungo il contenuto del titolo e del testo all'interno di ciascuna slide
-    circlesWrapper.innerHTML += `<div class="circle"></div>`;
-}
-
-//prendo tutti gli elementi ocn la classe item e li salvo in un array
-const itemsCollection = document.getElementsByClassName('item');
-
-//prendo tutta la collection dei pallini
-const circlesCollection = document.getElementsByClassName('circle');
-
-//al primo elemento tolgo la classe hide
-itemsCollection[counterImg].classList.remove('hide');
-
-//rendo attivo il primo pallino
-circlesCollection[counterImg].classList.add('active');
-
-//al click di next
-btnNext.addEventListener('click', function(){
-    //aggiungo la classe hide all'elemento corrente e rimuovo active dal pallino corrente
-    itemsCollection[counterImg].classList.add('hide');
-    circlesCollection[counterImg].classList.remove('active');
-    //incrementa il contatore
-    counterImg++;
-    //BONUS 1
-    // Verifico se si è raggiunta l'ultima immagine
-    if (counterImg === itemsCollection.length) {
-        // Se sì, torna alla prima immagine
-        counterImg = 0;
-    }
-    //tolgo la classe hide all'elemento corrente e aggiungo active dal pallino corrente
-    itemsCollection[counterImg].classList.remove('hide');
-    circlesCollection[counterImg].classList.add('active');
-    //al click di next appare prev
-    btnPrev.classList.remove('hide');
-});
-
-//al click di prev come punto 4 va inverso
-btnPrev.addEventListener('click', function(){
-    itemsCollection[counterImg].classList.add('hide');
-    circlesCollection[counterImg].classList.remove('active');
-    counterImg--;
-    //BONUS 1
-    // Verifico se si è raggiunta la prima immagine
-    if (counterImg < 0) {
-        // Se sì, torna all'ultima immagine
-        counterImg = itemsCollection.length - 1;
-    }
-    itemsCollection[counterImg].classList.remove('hide');
-    circlesCollection[counterImg].classList.add('active');
-    //al click di prev mostrio next togliendo la classe hide
-    btnNext.classList.remove('hide');
-    
-});
-
-//Autoslide
-// Variabile per l'intervallo di autoslide
-let interval; 
-
-// Tempo in millisecondi tra le slide automatiche
-const autoSlideInterval = 3000; 
-
-// Funzione per avviare l'autoslide
-function startAutoSlide() {
-  interval = setInterval(function () {
-
-    // Simula il click sul pulsante "Next" per cambiare immagine
-    btnNext.click(); 
-  }, autoSlideInterval);
-}
-
-// Funzione per interrompere l'autoslide
-function stopAutoSlide() {
-  clearInterval(interval);
-}
-
-// Aggiungo un gestore di eventi per avviare l'autoslide al caricamento della pagina
-document.addEventListener("DOMContentLoaded", startAutoSlide);
-
-// Aggiungo gestori di eventi per interrompere l'autoslide quando il mouse è sopra il carosello
-itemsWrapper.addEventListener("mouseover", stopAutoSlide);
-itemsWrapper.addEventListener("mouseout", startAutoSlide);
+      image: 'img/01.webp',
+      title: "Marvel's Spiderman Miles Morale",
+      text: 'Experience the rise of Miles Morales as the new hero masters incredible, explosive new powers to become his own Spider-Man.',
+    },
+    {
+      image: 'img/02.webp',
+      title: 'Ratchet & Clank: Rift Apart',
+      text: 'Go dimension-hopping with Ratchet and Clank as they take on an evil emperor from another reality.',
+    },
+    {
+      image: 'img/03.webp',
+      title: 'Fortnite',
+      text: "Grab all of your friends and drop into Epic Games Fortnite, a massive 100 - player face - off that combines looting, crafting, shootouts and chaos.",
+    },
+    {
+      image: 'img/04.webp',
+      title: 'Stray',
+      text: 'Lost, injured and alone, a stray cat must untangle an ancient mystery to escape a long-forgotten city',
+    },
+    {
+      image: 'img/05.webp',
+      title: "Marvel's Avengers",
+      text: "Marvel's Avengers is an epic, third-person, action-adventure game that combines an original, cinematic story with single-player and co-operative gameplay.",
+    },
+  ];
+  
+  const slider = new Slider(
+    images,
+    '.items-wrapper',
+    '.circles',
+    '.right',
+    '.left'
+  );
+  
